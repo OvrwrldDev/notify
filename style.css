@@ -1,0 +1,193 @@
+:root {
+    --font-primary: "Exo 2", sans-serif;
+    --font-body: "Inter", sans-serif;
+    --font-mono: "JetBrains Mono", monospace;
+    --font-weight-regular: 400;
+    --font-weight-medium: 500;
+
+    --panel-bg: linear-gradient(135deg, rgba(22, 24, 31, 0.92), rgba(13, 15, 20, 0.88));
+    --stroke: rgba(255, 255, 255, 0.09);
+    --text: #eef1f5;
+    --text-muted: #8d99a8;
+    --cut: 16px;
+}
+
+* {
+    font-family: var(--font-body);
+    font-weight: var(--font-weight-regular);
+}
+
+html,
+body {
+    background-color: rgba(0, 0, 0, 0) !important;
+    background: none !important;
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    overflow: hidden;
+}
+
+html::-webkit-scrollbar {
+    display: none;
+}
+
+.success {
+    --accent: #2ee6a8;
+}
+.primary {
+    --accent: #7c9cff;
+}
+.warning {
+    --accent: #ffb84d;
+}
+.error {
+    --accent: #ff4d6d;
+}
+.police {
+    --accent: #2f7dfd;
+}
+.ambulance {
+    --accent: #22d3ee;
+}
+
+.success,
+.primary,
+.warning,
+.error,
+.police,
+.ambulance {
+    background: var(--panel-bg);
+    color: var(--text);
+    backdrop-filter: blur(14px) saturate(140%);
+    -webkit-backdrop-filter: blur(14px) saturate(140%);
+    border: 1px solid var(--stroke);
+    border-left: 3px solid var(--accent);
+}
+
+.notify-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    min-width: 280px;
+    max-width: 400px;
+    padding: 14px 18px 14px 16px;
+    position: relative;
+    border-radius: 0;
+    opacity: 0;
+    transform: translateX(28px) rotate(4deg) scale(0.96);
+    transition:
+        opacity 0.25s cubic-bezier(0.16, 0.8, 0.3, 1),
+        transform 0.35s cubic-bezier(0.16, 0.8, 0.3, 1);
+}
+
+/* small folded-corner accent flag, independent of the card's own
+   background/shadow so it never interacts with the blur */
+.notify-item::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 0 var(--cut) var(--cut) 0;
+    border-color: transparent var(--accent) transparent transparent;
+    opacity: 0.9;
+}
+
+.notify-item.notify-show {
+    opacity: 1;
+    transform: translateX(0) rotate(0deg) scale(1);
+}
+
+.notify-item.notify-hide {
+    opacity: 0;
+    transform: translateX(28px) rotate(-3deg) scale(0.98);
+    transition:
+        opacity 0.3s ease,
+        transform 0.3s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .notify-item,
+    .notify-item.notify-show,
+    .notify-item.notify-hide {
+        transition: opacity 0.2s ease;
+        transform: none !important;
+    }
+}
+
+.notify-icon-chip {
+    flex-shrink: 0;
+    width: 30px;
+    height: 30px;
+    margin-top: 3px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: color-mix(in srgb, var(--accent) 18%, transparent);
+    border: 1px solid color-mix(in srgb, var(--accent) 55%, transparent);
+    transform: rotate(45deg);
+}
+
+.notify-icon {
+    color: var(--accent);
+    font-size: 17px;
+    transform: rotate(-45deg);
+    line-height: 1;
+}
+
+.notify-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.notify-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 3px;
+}
+
+.notify-message {
+    font-family: var(--font-body);
+    font-weight: var(--font-weight-medium);
+    font-size: clamp(12px, 1.1vw, 15px);
+    line-height: 1.42;
+    color: var(--text);
+}
+
+.notify-multiline {
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
+.notify-caption {
+    font-family: var(--font-mono);
+    font-size: clamp(10px, 0.9vw, 12px);
+    margin-top: 3px;
+    color: var(--text-muted);
+}
+
+.notify-progress {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 2px;
+    width: 100%;
+    background: linear-gradient(90deg, var(--accent), color-mix(in srgb, var(--accent) 30%, transparent));
+    animation: notify-shrink linear forwards;
+    transform-origin: left;
+}
+
+@keyframes notify-shrink {
+    from {
+        transform: scaleX(1);
+    }
+    to {
+        transform: scaleX(0);
+    }
+}
